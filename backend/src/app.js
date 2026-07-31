@@ -1,19 +1,20 @@
-
 const express = require("express");
 const cors = require("cors");
 
-const app = express();
+const authRoutes = require("./routes/authRoutes");
 
-// Middleware
+const app = express();
+console.log(authRoutes);
 app.use(cors());
 app.use(express.json());
 
-// Test Route
+app.use("/api/auth", authRoutes);
+
 app.get("/", (req, res) => {
-    res.json({
-        success: true,
-        message: "MindGuard Backend Running 🚀"
-    });
+  res.json({
+    success: true,
+    message: "MindGuard Backend Running 🚀",
+  });
 });
 
 module.exports = app;
