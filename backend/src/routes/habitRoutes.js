@@ -6,12 +6,13 @@ const protect = require("../middlewares/authMiddleware");
 const {
     createHabit,
     getHabits,
-    updateHabit
+    updateHabit,
+    deleteHabit,
 } = require("../controllers/habitController");
 
 router.post("/", protect, createHabit);
 router.get("/", protect, getHabits);
 router.put("/:id", protect, updateHabit);
-
+router.delete("/:id", protect, deleteHabit);
 
 module.exports = router;

@@ -103,8 +103,47 @@ const updateHabit = async (req, res) => {
   }
 };
 
+const deleteHabit = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const habit = await Habit.findById(id);
+
+    if (!habit) {
+      return res.status(404).json({
+        success: false,
+        message: "Habit not found.",
+      });
+    }
+
+    // Check ownership
+    if (habit.user.toString() !== req.user.id) {
+      return res.status(403).json({
+        success: false,
+        message: "Access denied.",
+      });
+    }
+
+    await Habit.findByIdAndDelete(id);
+
+    res.status(200).json({
+      success: true,
+      message: "Habit deleted successfully.",
+    });
+
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
 module.exports = {
   createHabit,
   getHabits,
   updateHabit,
+  deleteHabit,
 };
