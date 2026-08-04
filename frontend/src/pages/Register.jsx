@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { User, Mail, Lock } from "lucide-react";
+import toast from "react-hot-toast";
 
 import api from "../services/api";
 
@@ -31,7 +32,7 @@ function Register() {
     e.preventDefault();
 
     if (!formData.name || !formData.email || !formData.password) {
-      alert("Please fill all fields.");
+      toast.error("Please fill all fields.");
       return;
     }
 
@@ -40,12 +41,11 @@ function Register() {
 
       await api.post("/auth/register", formData);
 
-      alert("Account created successfully!");
-
+      toast.success("Account created successfully!");
       navigate("/login");
 
     } catch (error) {
-      alert(
+      toast.error(
         error.response?.data?.message || "Registration failed."
       );
     } finally {

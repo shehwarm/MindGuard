@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Mail, Lock } from "lucide-react";
-
+import toast from "react-hot-toast";
 import api from "../services/api";
 
 import Logo from "../components/Logo";
@@ -30,7 +30,7 @@ function Login() {
     e.preventDefault();
 
     if (!formData.email || !formData.password) {
-      alert("Please fill all fields.");
+      toast.error("Please fill all fields.");
       return;
     }
 
@@ -40,13 +40,15 @@ function Login() {
       const response = await api.post("/auth/login", formData);
 
       localStorage.setItem("token", response.data.token);
+          
+      toast.success("Welcome back!");
 
       navigate("/dashboard");
 
     } catch (error) {
-      alert(
-        error.response?.data?.message || "Login failed."
-      );
+      toast.error(
+      error.response?.data?.message || "Login failed."
+    );
     } finally {
       setLoading(false);
     }
