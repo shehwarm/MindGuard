@@ -19,6 +19,8 @@ function Register() {
     password: "",
   });
 
+  const [errors, setErrors] = useState({});
+
   const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
@@ -26,22 +28,55 @@ function Register() {
       ...prev,
       [e.target.name]: e.target.value,
     }));
+
+    // Clear error while typing
+    setErrors((prev) => ({
+      ...prev,
+      [e.target.name]: "",
+    }));
+  };
+
+  const validateForm = () => {
+    const newErrors = {};
+
+    // Name Validation
+    if (!formData.name.trim()) {
+      newErrors.name = "Name is required.";
+    } else if (formData.name.trim().length < 3) {
+      newErrors.name = "Name must be at least 3 characters.";
+    }
+
+    // Email Validation
+    if (!formData.email.trim()) {
+      newErrors.email = "Email is required.";
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = "Please enter a valid email.";
+    }
+
+    // Password Validation
+    if (!formData.password) {
+      newErrors.password = "Password is required.";
+    } else if (formData.password.length < 6) {
+      newErrors.password = "Password must be at least 6 characters.";
+    }
+
+    setErrors(newErrors);
+
+    return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!formData.name || !formData.email || !formData.password) {
-      toast.error("Please fill all fields.");
-      return;
-    }
+    if (!validateForm()) return;
 
     try {
       setLoading(true);
 
       await api.post("/auth/register", formData);
 
-      toast.success("Account created successfully!");
+      toast.success("Account created successfully! 🎉");
+
       navigate("/login");
 
     } catch (error) {
@@ -72,6 +107,8 @@ function Register() {
             placeholder="Full Name"
             value={formData.name}
             onChange={handleChange}
+            error={errors.name}
+            required
           />
 
           <InputField
@@ -81,6 +118,8 @@ function Register() {
             placeholder="Email Address"
             value={formData.email}
             onChange={handleChange}
+            error={errors.email}
+            required
           />
 
           <InputField
@@ -90,6 +129,8 @@ function Register() {
             placeholder="Password"
             value={formData.password}
             onChange={handleChange}
+            error={errors.password}
+            required
           />
 
           <PrimaryButton

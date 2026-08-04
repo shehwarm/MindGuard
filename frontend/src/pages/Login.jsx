@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Mail, Lock } from "lucide-react";
 import toast from "react-hot-toast";
+
 import api from "../services/api";
 
 import Logo from "../components/Logo";
@@ -17,22 +18,47 @@ function Login() {
     password: "",
   });
 
-  const [loading, setLoading] =useState(false);
+  const [errors, setErrors] = useState({});
+
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     setFormData((prev) => ({
       ...prev,
       [e.target.name]: e.target.value,
     }));
+
+    // Remove error while typing
+    setErrors((prev) => ({
+      ...prev,
+      [e.target.name]: "",
+    }));
+  };
+
+  const validateForm = () => {
+    const newErrors = {};
+
+    if (!formData.email.trim()) {
+      newErrors.email = "Email is required.";
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = "Please enter a valid email.";
+    }
+
+    if (!formData.password) {
+      newErrors.password = "Password is required.";
+    } else if (formData.password.length < 6) {
+      newErrors.password = "Password must be at least 6 characters.";
+    }
+
+    setErrors(newErrors);
+
+    return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!formData.email || !formData.password) {
-      toast.error("Please fill all fields.");
-      return;
-    }
+    if (!validateForm()) return;
 
     try {
       setLoading(true);
@@ -40,15 +66,14 @@ function Login() {
       const response = await api.post("/auth/login", formData);
 
       localStorage.setItem("token", response.data.token);
-          
-      toast.success("Welcome back!");
+
+      toast.success("Welcome back! 🍵");
 
       navigate("/dashboard");
-
     } catch (error) {
       toast.error(
-      error.response?.data?.message || "Login failed."
-    );
+        error.response?.data?.message || "Login failed."
+      );
     } finally {
       setLoading(false);
     }
@@ -73,6 +98,8 @@ function Login() {
             placeholder="Email Address"
             value={formData.email}
             onChange={handleChange}
+            error={errors.email}
+            required
           />
 
           <InputField
@@ -82,6 +109,8 @@ function Login() {
             placeholder="Password"
             value={formData.password}
             onChange={handleChange}
+            error={errors.password}
+            required
           />
 
           <PrimaryButton
@@ -97,7 +126,7 @@ function Login() {
             to="/register"
             className="text-[#7BAE7F] font-semibold hover:underline"
           >
-            Register
+            Create Account
           </Link>
         </p>
 
