@@ -3,25 +3,22 @@ const cors = require("cors");
 
 const authRoutes = require("./routes/authRoutes");
 const focusRoutes = require("./routes/focusRoutes");
+const dashboardRoutes = require("./routes/dashboardRoutes");
 
 const app = express();
-console.log(authRoutes);
+
+// Middlewares
 app.use(cors());
 app.use(express.json());
-app.use("/api/focus", focusRoutes);
 
-const habitRoutes = require("./routes/habitRoutes");
-const focusRoutes = require("./routes/focusRoutes");
-
+// Routes
 app.use("/api/auth", authRoutes);
-app.use("/api/habits", habitRoutes);
 app.use("/api/focus", focusRoutes);
+app.use("/api/dashboard", dashboardRoutes);
 
+// Test Route
 app.get("/", (req, res) => {
-  res.json({
-    success: true,
-    message: "MindGuard Backend Running 🚀",
-  });
+  res.send("🚀 MindGuard API is running...");
 });
 
 module.exports = app;
