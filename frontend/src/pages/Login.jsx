@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Mail, Lock } from "lucide-react";
 import toast from "react-hot-toast";
-
+import { useAuth } from "../context/AuthContext";
 import api from "../services/api";
 
 import Logo from "../components/Logo";
@@ -19,6 +19,7 @@ function Login() {
   });
 
   const [errors, setErrors] = useState({});
+  const { login } = useAuth();
 
   const [loading, setLoading] = useState(false);
 
@@ -65,8 +66,10 @@ function Login() {
 
       const response = await api.post("/auth/login", formData);
 
-      localStorage.setItem("token", response.data.token);
-
+      login(
+         response.data.token,
+         response.data.user
+          );
       toast.success("Welcome back! 🍵");
 
       navigate("/dashboard");
