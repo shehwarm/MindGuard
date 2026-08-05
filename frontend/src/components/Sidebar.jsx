@@ -4,6 +4,7 @@ import {
   Timer,
   History,
   BarChart3,
+  NotebookPen,
   LogOut,
 } from "lucide-react";
 
@@ -40,6 +41,11 @@ function Sidebar() {
           <Target size={20} />
           <span>Goals</span>
         </NavLink>
+
+        <NavLink to="/notes" className={linkClass}>
+  <NotebookPen size={20} />
+  <span>Notes</span>
+</NavLink>
 
         <NavLink to="/focus" className={linkClass}>
           <Timer size={20} />

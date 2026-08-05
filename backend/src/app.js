@@ -7,6 +7,7 @@ const dashboardRoutes = require("./routes/dashboardRoutes");
 const analyticsRoutes = require("./routes/analyticsRoutes");
 const streakRoutes = require("./routes/streakRoutes");
 const goalRoutes = require("./routes/goalRoutes");
+const noteRoutes = require("./routes/noteRoutes");
 
 const app = express();
 
@@ -21,6 +22,7 @@ app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/analytics", analyticsRoutes);
 app.use("/api/streak", streakRoutes);
 app.use("/api/goals", goalRoutes);
+app.use("/api/notes", noteRoutes);
 
 // Test Route
 app.get("/", (req, res) => {

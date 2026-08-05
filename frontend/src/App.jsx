@@ -7,6 +7,7 @@ import Focus from "./pages/Focus";
 import History from "./pages/History";
 import Analytics from "./pages/Analytics";
 import Goals from "./pages/Goals";
+import Notes from "./pages/Notes";
 
 import ProtectedRoute from "./routes/ProtectedRoute";
 
@@ -41,6 +42,14 @@ function App() {
           </ProtectedRoute>
         }
       />
+      <Route
+  path="/notes"
+  element={
+    <ProtectedRoute>
+      <Notes />
+    </ProtectedRoute>
+  }
+/>
 
       <Route
         path="/goals"
