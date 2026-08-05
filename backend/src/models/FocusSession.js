@@ -10,22 +10,21 @@ const focusSessionSchema = new mongoose.Schema(
 
     duration: {
       type: Number,
-      required: true,
+      default: 25,
     },
 
     completed: {
       type: Boolean,
-      default: true,
+      default: false,
     },
 
     startedAt: {
       type: Date,
-      required: true,
+      default: Date.now,
     },
 
-    endedAt: {
+    completedAt: {
       type: Date,
-      required: true,
     },
   },
   {
@@ -33,4 +32,7 @@ const focusSessionSchema = new mongoose.Schema(
   }
 );
 
-module.exports = mongoose.model("FocusSession", focusSessionSchema);
+module.exports = mongoose.model(
+  "FocusSession",
+  focusSessionSchema
+);
