@@ -1,15 +1,12 @@
 import { Navigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 function ProtectedRoute({ children }) {
   const { token, loading } = useAuth();
 
   if (loading) {
-    return (
-      <h1 className="text-center mt-20 text-2xl">
-        Loading...
-      </h1>
-    );
+    return <LoadingSpinner />;
   }
 
   if (!token) {
