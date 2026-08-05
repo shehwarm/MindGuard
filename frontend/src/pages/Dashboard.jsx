@@ -1,28 +1,54 @@
+import {
+  Flame,
+  Clock,
+  Target,
+} from "lucide-react";
+
+import DashboardLayout from "../components/DashboardLayout";
+import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
+import WelcomeCard from "../components/WelcomeCard";
+import StatCard from "../components/StatCard";
+import QuickActions from "../components/QuickActions";
 
 function Dashboard() {
   return (
-    <>
-      <Navbar />
+    <DashboardLayout
+      sidebar={<Sidebar />}
+      navbar={<Navbar />}
+    >
 
-      <div style={{ padding: "30px" }}>
-        <h1>👋 Welcome to MindGuard</h1>
+      <div className="space-y-8">
 
-        <h3>Today's Focus</h3>
-        <p>0 Minutes</p>
+        <WelcomeCard />
 
-        <h3>Productivity Score</h3>
-        <p>0%</p>
+        <div className="grid md:grid-cols-3 gap-6">
 
-        <h3>Today's Habits</h3>
+          <StatCard
+            title="Today's Focus"
+            value="2h 15m"
+            icon={<Clock size={32} />}
+          />
 
-        <ul>
-          <li>Exercise</li>
-          <li>Read 20 Pages</li>
-          <li>Meditate</li>
-        </ul>
+          <StatCard
+            title="Current Streak"
+            value="7 Days"
+            icon={<Flame size={32} />}
+          />
+
+          <StatCard
+            title="Goals Completed"
+            value="12"
+            icon={<Target size={32} />}
+          />
+
+        </div>
+
+        <QuickActions />
+
       </div>
-    </>
+
+    </DashboardLayout>
   );
 }
 
