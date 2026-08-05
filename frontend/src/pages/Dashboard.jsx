@@ -1,9 +1,5 @@
 import { useEffect, useState } from "react";
-import {
-  Flame,
-  Clock,
-  Target,
-} from "lucide-react";
+import { Clock, Flame, Target } from "lucide-react";
 
 import DashboardLayout from "../components/DashboardLayout";
 import Sidebar from "../components/Sidebar";
@@ -11,6 +7,8 @@ import Navbar from "../components/Navbar";
 import WelcomeCard from "../components/WelcomeCard";
 import StatCard from "../components/StatCard";
 import QuickActions from "../components/QuickActions";
+import MotivationCard from "../components/MotivationCard";
+import RecentSessions from "../components/RecentSessions";
 
 import api from "../services/api";
 import { useAuth } from "../context/AuthContext";
@@ -24,35 +22,53 @@ function Dashboard() {
     totalMinutes: 0,
   });
 
+  const [streak, setStreak] = useState(0);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchStats = async () => {
+    const fetchDashboard = async () => {
       try {
-        const response = await api.get("/dashboard/stats", {
+        // Dashboard statistics
+        const statsResponse = await api.get("/dashboard/stats", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
 
-        setStats(response.data.stats);
+        setStats(statsResponse.data.stats);
+
+        // Current streak
+        const streakResponse = await api.get("/streak", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        setStreak(streakResponse.data.streak);
       } catch (error) {
-        console.error(error);
+        console.error("Dashboard Error:", error);
       } finally {
         setLoading(false);
       }
     };
 
     if (token) {
-      fetchStats();
+      fetchDashboard();
     }
   }, [token]);
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-screen text-2xl font-semibold text-[#5E8F63]">
-        🍃 Loading Dashboard...
-      </div>
+      <DashboardLayout
+        sidebar={<Sidebar />}
+        navbar={<Navbar />}
+      >
+        <div className="flex justify-center items-center h-[70vh]">
+          <h2 className="text-2xl font-bold text-[#5E8F63]">
+            🍃 Loading Dashboard...
+          </h2>
+        </div>
+      </DashboardLayout>
     );
   }
 
@@ -65,17 +81,18 @@ function Dashboard() {
 
         <WelcomeCard />
 
+        {/* Statistics */}
         <div className="grid md:grid-cols-3 gap-6">
 
           <StatCard
-            title="Today's Sessions"
-            value={stats.totalSessions}
+            title="Focus Minutes"
+            value={`${stats.totalMinutes} mins`}
             icon={<Clock size={32} />}
           />
 
           <StatCard
-            title="Focus Minutes"
-            value={`${stats.totalMinutes} min`}
+            title="Current Streak"
+            value={`${streak} Days`}
             icon={<Flame size={32} />}
           />
 
@@ -87,7 +104,14 @@ function Dashboard() {
 
         </div>
 
+        {/* Motivation */}
+        <MotivationCard streak={streak} />
+
+        {/* Quick Actions */}
         <QuickActions />
+
+        {/* Recent Sessions */}
+        <RecentSessions />
 
       </div>
     </DashboardLayout>

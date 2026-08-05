@@ -2,85 +2,70 @@ import {
   LayoutDashboard,
   Target,
   Timer,
+  History,
   BarChart3,
-  User,
-  Settings,
   LogOut,
 } from "lucide-react";
 
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
 function Sidebar() {
-
   const { logout } = useAuth();
 
-  return (
-    <aside className="hidden md:block w-64 bg-white border-r border-[#E6EEDB] min-h-screen p-6">
+  const linkClass = ({ isActive }) =>
+    `flex items-center gap-3 p-3 rounded-xl transition ${
+      isActive
+        ? "bg-[#DCEFD9] text-[#5E8F63] font-semibold"
+        : "hover:bg-[#EEF6EA] text-gray-700"
+    }`;
 
-      <h1 className="text-2xl font-bold text-[#5E8F63] mb-10">
+  return (
+    <aside className="hidden md:flex flex-col w-64 min-h-screen bg-white border-r border-[#E6EEDB] p-6">
+
+      {/* Logo */}
+      <h1 className="text-3xl font-bold text-[#5E8F63] mb-10">
         🍵 MindGuard
       </h1>
 
-      <nav className="space-y-3">
+      {/* Navigation */}
+      <nav className="flex-1 space-y-2">
 
-        <Link
-          to="/dashboard"
-          className="flex items-center gap-3 p-3 rounded-xl hover:bg-[#EEF6EA]"
-        >
+        <NavLink to="/dashboard" className={linkClass}>
           <LayoutDashboard size={20} />
-          Dashboard
-        </Link>
+          <span>Dashboard</span>
+        </NavLink>
 
-        <Link
-          to="/habits"
-          className="flex items-center gap-3 p-3 rounded-xl hover:bg-[#EEF6EA]"
-        >
+        <NavLink to="/goals" className={linkClass}>
           <Target size={20} />
-          Habits
-        </Link>
+          <span>Goals</span>
+        </NavLink>
 
-        <Link
-          to="/focus"
-          className="flex items-center gap-3 p-3 rounded-xl hover:bg-[#EEF6EA]"
-        >
+        <NavLink to="/focus" className={linkClass}>
           <Timer size={20} />
-          Focus
-        </Link>
+          <span>Focus</span>
+        </NavLink>
 
-        <Link
-          to="/analytics"
-          className="flex items-center gap-3 p-3 rounded-xl hover:bg-[#EEF6EA]"
-        >
+        <NavLink to="/history" className={linkClass}>
+          <History size={20} />
+          <span>History</span>
+        </NavLink>
+
+        <NavLink to="/analytics" className={linkClass}>
           <BarChart3 size={20} />
-          Analytics
-        </Link>
-
-        <Link
-          to="/profile"
-          className="flex items-center gap-3 p-3 rounded-xl hover:bg-[#EEF6EA]"
-        >
-          <User size={20} />
-          Profile
-        </Link>
-
-        <Link
-          to="/settings"
-          className="flex items-center gap-3 p-3 rounded-xl hover:bg-[#EEF6EA]"
-        >
-          <Settings size={20} />
-          Settings
-        </Link>
-
-        <button
-          onClick={logout}
-          className="flex w-full items-center gap-3 p-3 rounded-xl hover:bg-red-50 text-red-500"
-        >
-          <LogOut size={20} />
-          Logout
-        </button>
+          <span>Analytics</span>
+        </NavLink>
 
       </nav>
+
+      {/* Logout */}
+      <button
+        onClick={logout}
+        className="flex items-center gap-3 p-3 rounded-xl text-red-500 hover:bg-red-50 transition mt-6"
+      >
+        <LogOut size={20} />
+        <span>Logout</span>
+      </button>
 
     </aside>
   );
