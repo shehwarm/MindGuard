@@ -5,6 +5,7 @@ import {
   History,
   BarChart3,
   NotebookPen,
+  Bot,
   LogOut,
 } from "lucide-react";
 
@@ -62,6 +63,7 @@ function Sidebar() {
           <span>Analytics</span>
         </NavLink>
 
+        
       </nav>
 
       {/* Logout */}

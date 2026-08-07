@@ -8,6 +8,7 @@ import History from "./pages/History";
 import Analytics from "./pages/Analytics";
 import Goals from "./pages/Goals";
 import Notes from "./pages/Notes";
+import AI from "./pages/AI";
 
 import ProtectedRoute from "./routes/ProtectedRoute";
 
@@ -59,7 +60,7 @@ function App() {
           </ProtectedRoute>
         }
       />
-
+      
       <Route
         path="/focus"
         element={
@@ -77,6 +78,14 @@ function App() {
           </ProtectedRoute>
         }
       />
+      <Route
+  path="/ai"
+  element={
+    <ProtectedRoute>
+      <AI />
+    </ProtectedRoute>
+  }
+/>
 
       <Route
         path="/analytics"
