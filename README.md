@@ -47,6 +47,12 @@ The application follows a clean MERN architecture with secure authentication and
 
 ## 📸 Screenshots
 
+### Signup
+
+![Signup](screenshots/signup.png)
+
+---
+
 ### Dashboard
 
 ![Dashboard](screenshots/dashboard.png)
